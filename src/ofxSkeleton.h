@@ -67,7 +67,7 @@ namespace pal {
 			void								setName(string name_);
 			
 			void								draw(float r_ = 4.0, const ofColor& colour_ = ofColor::white)	const;
-			void								drawAxes()														const;
+			void								drawAxes(float scale_ = 10.0)									const;
 			void								drawName(const ofColor& colour_ = ofColor::yellow)				const;
 			
 			const string&						getName()														const;

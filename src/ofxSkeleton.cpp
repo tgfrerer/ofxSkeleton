@@ -124,11 +124,11 @@ void ofxJoint::draw(float r_, const ofColor& colour_) const {
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::drawAxes() const {
+void ofxJoint::drawAxes(float scale_) const {
 	ofPushStyle();
 	ofPushMatrix();
 	ofMultMatrix(getGlobalTransformMatrix());
-	ofScale(10, 10, 10);
+	ofScale(scale_, scale_, scale_);
 	sAxisMesh().draw();
 	ofPopMatrix();
 	ofPopStyle();
@@ -140,7 +140,7 @@ void ofxJoint::drawName(const ofColor& colour_) const {
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
 	ofPushMatrix();
 	ofMultMatrix(getGlobalTransformMatrix());
-	ofDrawBitmapString(mName, 0,0);
+	ofDrawBitmapString(mName, 0, 0);
 	ofPopMatrix();
 	ofPopStyle();
 }
