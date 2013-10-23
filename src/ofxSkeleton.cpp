@@ -83,7 +83,7 @@ ofVboMesh & sAxisMesh(){
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::customDraw(float r_){
+void ofxJoint::customDraw(float r_) const {
 
 	ofVec3f p1(0);
 	ofVec3f p2(0);
@@ -103,7 +103,6 @@ void ofxJoint::customDraw(float r_){
 		ofPopMatrix();
 	}
 	
-	ofSetColor(ofColor::white);
 	ofPushMatrix();
 	ofScale(r_,r_,r_);
 	sJointMesh().drawWireframe();
@@ -113,21 +112,34 @@ void ofxJoint::customDraw(float r_){
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::draw(float r_){
+void ofxJoint::draw(float r_, const ofColor& colour_) const {
+	ofPushStyle();
 	ofPushMatrix();
 	ofMultMatrix(getGlobalTransformMatrix());
+	ofSetColor(colour_);
 	customDraw(r_);
 	ofPopMatrix();
+	ofPopStyle();
 };
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::drawAxes(){
+void ofxJoint::drawAxes() const {
+	ofPushStyle();
 	ofPushMatrix();
 	ofMultMatrix(getGlobalTransformMatrix());
 	ofScale(10, 10, 10);
 	sAxisMesh().draw();
 	ofPopMatrix();
+	ofPopStyle();
+}
+
+void ofxJoint::drawName(const ofColor& colour_) const {
+	ofPushStyle();
+	ofSetColor(colour_);
+	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
+	ofDrawBitmapString(mName, 0,0);
+	ofPopStyle();
 }
 
 // ----------------------------------------------------------------------
@@ -136,6 +148,18 @@ void ofxJoint::setParent(shared_ptr<ofxJoint> parent_){
 	parent = weak_ptr<ofxJoint>(parent_);
 	localTransformMatrix =  localTransformMatrix  * ofMatrix4x4::getInverseOf( parent_->getGlobalTransformMatrix());
 };
+
+// ----------------------------------------------------------------------
+
+const string& ofxJoint::getName() const {
+	return mName;
+}
+
+// ----------------------------------------------------------------------
+
+void ofxJoint::setName(string name_) {
+	mName = name_;
+}
 
 // ----------------------------------------------------------------------
 

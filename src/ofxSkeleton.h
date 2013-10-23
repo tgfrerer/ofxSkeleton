@@ -45,8 +45,9 @@ namespace pal {
 			weak_ptr<ofxJoint>					parent;
 			ofMatrix4x4							localTransformMatrix;
 			ofMatrix4x4							localParentTransformMatrix;
-			
-			virtual void						customDraw(float r);
+			string								mName;
+
+			virtual void						customDraw(float r)												const;
 			
 		public:
 			
@@ -60,25 +61,28 @@ namespace pal {
 			
 			void								setGlobalPosition(ofVec3f position_);
 			void								setParent(shared_ptr<ofxJoint> parent_);
+			void								setName(string name_);
 			
-			void								draw(float r_ = 4.0);
-			void								drawAxes();
+			void								draw(float r_ = 4.0, const ofColor& colour_ = ofColor::white)	const;
+			void								drawAxes()														const;
+			void								drawName(const ofColor& colour_ = ofColor::yellow)				const;
 			
+			const string&						getName()														const;
 			shared_ptr<ofxJoint>				getParent();
 			
-			const ofQuaternion					getOrientation()				const;
-			const ofQuaternion					getOrientationAtParent()		const;
-			const ofMatrix4x4					getLocalTransformMatrix()		const;
-			const ofMatrix4x4					getParentTransformMatrix()		const;
-			const ofVec3f						getParentPosition()				const;
+			const ofQuaternion					getOrientation()												const;
+			const ofQuaternion					getOrientationAtParent()										const;
+			const ofMatrix4x4					getLocalTransformMatrix()										const;
+			const ofMatrix4x4					getParentTransformMatrix()										const;
+			const ofVec3f						getParentPosition()												const;
 			
-			const ofMatrix4x4					getGlobalTransformMatrix()		const;
-			const ofMatrix4x4					getGlobalParentTransformMatrix()const;
+			const ofMatrix4x4					getGlobalTransformMatrix()										const;
+			const ofMatrix4x4					getGlobalParentTransformMatrix()								const;
 			
-			const ofQuaternion					getGlobalOrientationAtParent()	const;
-			const ofQuaternion					getGlobalOrientation()			const;
-			const ofVec3f						getGlobalPosition()				const;
-			const ofVec3f						getGlobalParentPosition()		const;
+			const ofQuaternion					getGlobalOrientationAtParent()									const;
+			const ofQuaternion					getGlobalOrientation()											const;
+			const ofVec3f						getGlobalPosition()												const;
+			const ofVec3f						getGlobalParentPosition()										const;
 			
 			ofxJoint()
 			:parent()	// will automatically initialize as a NULL shared ptr.
