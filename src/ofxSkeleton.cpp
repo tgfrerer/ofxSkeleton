@@ -138,16 +138,27 @@ void ofxJoint::drawName(const ofColor& colour_) const {
 	ofPushStyle();
 	ofSetColor(colour_);
 	ofSetDrawBitmapMode(OF_BITMAPMODE_MODEL_BILLBOARD);
+	ofPushMatrix();
+	ofMultMatrix(getGlobalTransformMatrix());
 	ofDrawBitmapString(mName, 0,0);
+	ofPopMatrix();
 	ofPopStyle();
 }
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::setParent(shared_ptr<ofxJoint> parent_){
+shared_ptr<ofxJoint> ofxJoint::setParent(shared_ptr<ofxJoint> parent_){
 	parent = weak_ptr<ofxJoint>(parent_);
 	localTransformMatrix =  localTransformMatrix  * ofMatrix4x4::getInverseOf( parent_->getGlobalTransformMatrix());
+	return parent_;
 };
+
+// ----------------------------------------------------------------------
+/// Alias for setParent()
+///@detail		Allows you to do the following:	mFoot->bone(mKnee)->bone(mHip);
+shared_ptr<ofxJoint> ofxJoint::bone(shared_ptr<ofxJoint> parent_){
+	return setParent(parent_);
+}
 
 // ----------------------------------------------------------------------
 
@@ -182,12 +193,12 @@ void ofxJoint::setOrientation(ofQuaternion orientation_){
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::setGlobalOrientationAtParent(ofQuaternion orientation_){
+void ofxJoint::setParentGlobalOrientation(ofQuaternion orientation_){
 	if (shared_ptr<ofxJoint> p = parent.lock()) {
 		p->setGlobalOrientation(orientation_);
 		localParentTransformMatrix.makeRotationMatrix(p->getOrientation());
 	} else {
-		setOrientationAtParent(orientation_);
+		setParentOrientation(orientation_);
 		localParentTransformMatrix.makeRotationMatrix(orientation_);
 	}
 };
@@ -201,7 +212,7 @@ const ofQuaternion ofxJoint::getOrientationAtParent() const{
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::setOrientationAtParent(ofQuaternion orientation_){
+void ofxJoint::setParentOrientation(ofQuaternion orientation_){
 	if (shared_ptr<ofxJoint> p = parent.lock()) {
 		p->setOrientation(orientation_);
 		localParentTransformMatrix.makeRotationMatrix(p->getOrientation());
@@ -281,7 +292,7 @@ const ofVec3f ofxJoint::getGlobalPosition() const {
 
 // ----------------------------------------------------------------------
 
-const ofVec3f ofxJoint::getGlobalParentPosition() const {
+const ofVec3f ofxJoint::getParentGlobalPosition() const {
 	if (shared_ptr<ofxJoint> p = parent.lock()){
 		return (getParentTransformMatrix() * getGlobalTransformMatrix()).getTranslation();
 	} else {
@@ -310,7 +321,7 @@ const ofMatrix4x4 ofxJoint::getParentTransformMatrix() const {
 }
 
 // ----------------------------------------------------------------------
-const ofMatrix4x4 ofxJoint::getGlobalParentTransformMatrix() const {
+const ofMatrix4x4 ofxJoint::getParentGlobalTransformMatrix() const {
 	ofMatrix4x4 m;
 	if (shared_ptr<ofxJoint> p = parent.lock()){
 		m = getParentTransformMatrix() * getGlobalTransformMatrix();
@@ -323,8 +334,8 @@ const ofMatrix4x4 ofxJoint::getGlobalParentTransformMatrix() const {
 
 // ----------------------------------------------------------------------
 
-const ofQuaternion ofxJoint::getGlobalOrientationAtParent() const {
-	return getGlobalParentTransformMatrix().getRotate();
+const ofQuaternion ofxJoint::getParentGlobalOrientation() const {
+	return getParentGlobalTransformMatrix().getRotate();
 }
 
 // ----------------------------------------------------------------------
@@ -341,7 +352,7 @@ void ofxIKchain::solve(){
 			// find relative angle between end effector and target
 			
 			const ofVec3f effectorPosition = endEffector->getGlobalPosition();
-			const ofMatrix4x4 worldToBone = (ofMatrix4x4::getInverseOf(bone->getGlobalParentTransformMatrix()));
+			const ofMatrix4x4 worldToBone = (ofMatrix4x4::getInverseOf(bone->getParentGlobalTransformMatrix()));
 			
 			ofVec3f localTarget =  targetPosition * worldToBone;
             ofVec3f localEffector = effectorPosition * worldToBone;
@@ -371,7 +382,7 @@ void ofxIKchain::solve(){
 			q.getRotate(parentOldAngle, parentOldAxis);
 			// clamp to the max angle.
 			q.makeRotate(ofClamp(parentOldAngle,-60,80), parentOldAxis);
-			bone->setOrientationAtParent(q);
+			bone->setParentOrientation(q);
 		}
 	}
 }

@@ -51,16 +51,19 @@ namespace pal {
 			
 		public:
 			
+			
 			void								setTransformMatrix(ofMatrix4x4 m_);
 			void								setOrientation(ofQuaternion orientation_);
-			void								setOrientationAtParent(ofQuaternion orientation_);
+			void								setParentOrientation(ofQuaternion orientation_);
 			
 			void								setPosition(ofVec3f position_);
 			void								setGlobalOrientation(ofQuaternion orientation_);
-			void								setGlobalOrientationAtParent(ofQuaternion orientation_);
+			void								setParentGlobalOrientation(ofQuaternion orientation_);
 			
 			void								setGlobalPosition(ofVec3f position_);
-			void								setParent(shared_ptr<ofxJoint> parent_);
+			shared_ptr<ofxJoint>				setParent(shared_ptr<ofxJoint> parent_);
+			shared_ptr<ofxJoint>				bone(shared_ptr<ofxJoint> parent_);
+			
 			void								setName(string name_);
 			
 			void								draw(float r_ = 4.0, const ofColor& colour_ = ofColor::white)	const;
@@ -77,12 +80,12 @@ namespace pal {
 			const ofVec3f						getParentPosition()												const;
 			
 			const ofMatrix4x4					getGlobalTransformMatrix()										const;
-			const ofMatrix4x4					getGlobalParentTransformMatrix()								const;
+			const ofMatrix4x4					getParentGlobalTransformMatrix()								const;
 			
-			const ofQuaternion					getGlobalOrientationAtParent()									const;
+			const ofQuaternion					getParentGlobalOrientation()									const;
 			const ofQuaternion					getGlobalOrientation()											const;
 			const ofVec3f						getGlobalPosition()												const;
-			const ofVec3f						getGlobalParentPosition()										const;
+			const ofVec3f						getParentGlobalPosition()										const;
 			
 			ofxJoint()
 			:parent()	// will automatically initialize as a NULL shared ptr.
