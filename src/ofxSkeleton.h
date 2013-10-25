@@ -74,7 +74,7 @@ namespace pal {
 			shared_ptr<ofxJoint>				getParent();
 			
 			const ofQuaternion					getOrientation()												const;
-			const ofQuaternion					getOrientationAtParent()										const;
+			const ofQuaternion					getParentOrientation()										const;
 			const ofMatrix4x4					getLocalTransformMatrix()										const;
 			const ofMatrix4x4					getParentTransformMatrix()										const;
 			const ofVec3f						getParentPosition()												const;
@@ -92,6 +92,74 @@ namespace pal {
 			{};
 			
 		};
+
+		// ----------------------------------------------------------------------
+		// Human skeleton helper methods.
+		
+		/**
+		 * @brief   Calculates hip and knee orientation
+		 *
+		 * @param   vHip_    global position of hip joint
+		 * @param   vKnee_   global position of knee joint
+		 * @param   vFoot_   global position of foot joint
+		 *
+		 * @return  qHip_    global orientation at hip joint
+		 * @return  qKnee_   global orientation at knee joint
+		 *
+		 * @detail  Orientations are calculated based on the global position of
+		 *          hip, knee, foot, and the assumption that the knee joint
+		 *          has only one degree of freedom (around its local x-axis).
+		 *
+		 * @note    After applying these orientations, you need to make sure to
+		 *          reset the joint positions, since they might have changed.
+		 *
+		 * @author tig
+		 */
+		static void calculateHipKneeOrientation(const ofVec3f& vHip_, const ofVec3f& vKnee_, const ofVec3f& vFoot_, ofQuaternion& qKnee_, ofQuaternion& qHip_) {
+			ofVec3f uHK = (vKnee_ - vHip_).getNormalized();			// e
+			ofVec3f uKF = (vFoot_ - vKnee_).getNormalized();		// f
+			
+			ofMatrix4x4 rotM;
+			
+			// If Hip, knee, Foot are in one straight line, we cannot calculate axes from cross products.
+			// but it is safe to assume zero rotation, so we initialize them with zero rotation and then
+			// check if they are *not* in a straight line.
+			
+			qKnee_ = ofQuaternion();
+			qHip_  = ofQuaternion();
+			
+			if (fabs(uHK.dot(uKF)) < 0.9999 ){
+				
+				// ----------| invariant: hip, knee, foot *not* in a straight line
+				
+				// this means, Hip-Knee-Foot span a plane. We know that our knee's local x axis must be perpendicular to
+				// this plane, since the knee can only rotate around it's local x axis.
+				// because their twists are linked, the hip shares the knee's local x-axis.
+				// the local y-axis at a joint always points in the opposite direction of the bone.
+				// with this, we can calculate the local z-coordinate as a cross product of local x and local y.
+				
+				ofVec3f ax  = uHK.getCrossed(uKF);	// local x-axis
+				ofVec3f ayK = -uKF;					// local y-axis (points in the opposite direction of the bone)
+				ofVec3f azK = ax.getCrossed(ayK);	// local z-axis
+				
+				rotM.set( ax.x,  ax.y,  ax.z, 0,
+						 ayK.x, ayK.y, ayK.z, 0,
+						 azK.x, azK.y, azK.z, 0,
+						 0,     0,     0, 1);	// generates a rotation matrix.
+				qKnee_ = rotM.getRotate();
+				
+				// for ax, we re-use local x-axis
+				ofVec3f ayH = -uHK;					// local y-axis
+				ofVec3f azH = ax.getCrossed(ayH);	// local z-axis
+				
+				rotM.set( ax.x,  ax.y,  ax.z, 0,
+						 ayH.x, ayH.y, ayH.z, 0,
+						 azH.x, azH.y, azH.z, 0,
+						 0,     0,     0, 1);	// generates a rotation matrix.
+				
+				qHip_ = rotM.getRotate();
+			}
+		}
 		
 		// --------------------------------------------------------
 		// this is currently only in prototype stage:

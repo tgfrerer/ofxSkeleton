@@ -69,7 +69,6 @@ ofMesh getAxisMesh(){
 	
 	mesh.addVertices(vertices, 6);
 	mesh.addColors(colors, 6);
-	ofLogNotice() << "tock";
 	return mesh;
 }
 
@@ -206,7 +205,7 @@ void ofxJoint::setParentGlobalOrientation(ofQuaternion orientation_){
 
 // ----------------------------------------------------------------------
 
-const ofQuaternion ofxJoint::getOrientationAtParent() const{
+const ofQuaternion ofxJoint::getParentOrientation() const{
 		return localParentTransformMatrix.getRotate();
 };
 
@@ -228,7 +227,6 @@ void ofxJoint::setPosition(ofVec3f position_){
 		localTransformMatrix.setTranslation(position_);
 	} else {
 		localTransformMatrix.setTranslation(position_);
-//		localTransformMatrix = localTransformMatrix * ofMatrix4x4::getInverseOf(getJointTransformMatrix());
 	}
 };
 
@@ -369,7 +367,7 @@ void ofxIKchain::solve(){
 			ofVec3f axis = -(localTarget.getCrossed(localEffector)).getNormalized();
 			
 			ofQuaternion q, p;
-			p = bone->getOrientationAtParent();
+			p = bone->getParentOrientation();
 
 			ofVec3f parentOldAxis;
 			float parentOldAngle;
