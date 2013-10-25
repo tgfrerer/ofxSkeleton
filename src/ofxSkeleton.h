@@ -32,12 +32,24 @@
 namespace pal {
 	namespace ofxSkeleton {
 		
-		
-		// a bone is what links two joints.
-		// a joint is linked to its parent joint through a bone.
-		
-		// a joint that has no parents is a root joint.
-		
+		/**
+		 * @brief   A connector of bones in 3d space.
+		 *
+		 * @detail  A bone is what links two joints.
+		 *          A joint is linked to its parent joint through a bone.
+		 *          A joint can have many children, but only one parent.
+		 *          A joint that has no parents is a root joint.
+		 *
+		 * @note    By default, any position / orientation operations on joints
+		 *          are relative to its parent joint. These are local
+		 *          operations. If you want to set the global orientaion /
+		 *          position of a joint, use the equivalent setGlobal*
+		 *          methods.
+		 *
+		 * @author tig
+		 *
+		 * @date   2013-10-25
+		 */
 		class ofxJoint {
 			
 		private:
@@ -74,7 +86,7 @@ namespace pal {
 			shared_ptr<ofxJoint>				getParent();
 			
 			const ofQuaternion					getOrientation()												const;
-			const ofQuaternion					getParentOrientation()										const;
+			const ofQuaternion					getParentOrientation()											const;
 			const ofMatrix4x4					getLocalTransformMatrix()										const;
 			const ofMatrix4x4					getParentTransformMatrix()										const;
 			const ofVec3f						getParentPosition()												const;
