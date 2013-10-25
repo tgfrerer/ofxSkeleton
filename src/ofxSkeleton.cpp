@@ -92,11 +92,11 @@ void ofxJoint::customDraw(float r_) const {
 		p1 = p1 * p->getGlobalTransformMatrix() * ofMatrix4x4::getInverseOf(getGlobalTransformMatrix());
 
 		ofMatrix4x4 mat;
-		mat.makeRotationMatrix(p1-p2, ofVec3f(0,1,0));
+		mat.makeRotationMatrix(p2-p1, ofVec3f(0,1,0));
 
 		ofPushMatrix();
 		ofMultMatrix(mat.getInverse());
-		ofTranslate(0, (p2-p1).length() * 0.5, 0);
+		ofTranslate(0, -(p2-p1).length() * 0.5, 0);
 		ofScale(r_,(p2-p1).length(),r_);
 		sBoneMesh().drawWireframe();
 		ofPopMatrix();

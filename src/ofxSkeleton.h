@@ -46,7 +46,7 @@ namespace pal {
 		 *          position of a joint, use the equivalent setGlobal*
 		 *          methods.
 		 *
-		 * @author tig
+		 * @author  tig
 		 *
 		 * @date   2013-10-25
 		 */
@@ -125,7 +125,7 @@ namespace pal {
 		 * @note    After applying these orientations, you need to make sure to
 		 *          reset the joint positions, since they might have changed.
 		 *
-		 * @author tig
+		 * @author  tig
 		 */
 		static void calculateHipKneeOrientation(const ofVec3f& vHip_, const ofVec3f& vKnee_, const ofVec3f& vFoot_, ofQuaternion& qKnee_, ofQuaternion& qHip_) {
 			ofVec3f uHK = (vKnee_ - vHip_).getNormalized();			// e
