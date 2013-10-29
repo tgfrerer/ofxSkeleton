@@ -131,8 +131,6 @@ namespace pal {
 			ofVec3f uHK = (vKnee_ - vHip_).getNormalized();			// e
 			ofVec3f uKF = (vFoot_ - vKnee_).getNormalized();		// f
 			
-			ofMatrix4x4 rotM;
-			
 			// If Hip, knee, Foot are in one straight line, we cannot calculate axes from cross products.
 			// but it is safe to assume zero rotation, so we initialize them with zero rotation and then
 			// check if they are *not* in a straight line.
@@ -143,12 +141,14 @@ namespace pal {
 			if (fabs(uHK.dot(uKF)) < 0.9999 ){
 				
 				// ----------| invariant: hip, knee, foot *not* in a straight line
-				
+
 				// this means, Hip-Knee-Foot span a plane. We know that our knee's local x axis must be perpendicular to
 				// this plane, since the knee can only rotate around it's local x axis.
 				// because their twists are linked, the hip shares the knee's local x-axis.
 				// the local y-axis at a joint always points in the opposite direction of the bone.
 				// with this, we can calculate the local z-coordinate as a cross product of local x and local y.
+
+				ofMatrix4x4 rotM;
 				
 				ofVec3f ax  = uHK.getCrossed(uKF);	// local x-axis
 				ofVec3f ayK = -uKF;					// local y-axis (points in the opposite direction of the bone)
