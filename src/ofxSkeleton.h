@@ -38,17 +38,17 @@ namespace pal {
 		 * @detail  A bone is what links two joints.
 		 *          A joint is linked to its parent joint through a bone.
 		 *          A joint can have many children, but only one parent.
-		 *          A joint that has no parents is a root joint.
+		 *          A joint with no parent is a root joint.
 		 *
-		 * @note    By default, any position / orientation operations on joints
-		 *          are relative to its parent joint. These are local
+		 * @note    By default, any position / orientation methods on joints
+		 *          operate relative to its parent joint. These are local
 		 *          operations. If you want to set the global orientaion /
 		 *          position of a joint, use the equivalent setGlobal*
 		 *          methods.
 		 *
 		 * @author  tig
 		 *
-		 * @date   2013-10-25
+		 * @date   2013-10-31
 		 */
 		class ofxJoint {
 			
@@ -78,7 +78,7 @@ namespace pal {
 			
 			void								setName(string name_);
 			
-			void								draw(float r_ = 4.0, const ofColor& colour_ = ofColor::white)	const;
+			void								draw(float r_ = 4.0)	const;
 			void								drawAxes(float scale_ = 10.0)									const;
 			void								drawName(const ofColor& colour_ = ofColor::yellow)				const;
 			
@@ -138,7 +138,7 @@ namespace pal {
 			qKnee_ = ofQuaternion();
 			qHip_  = ofQuaternion();
 			
-			if (fabs(uHK.dot(uKF)) < 0.9999 ){
+			if (fabs(uHK.dot(uKF)) < 0.9999){
 				
 				// ----------| invariant: hip, knee, foot *not* in a straight line
 
@@ -174,7 +174,7 @@ namespace pal {
 		}
 		
 		// --------------------------------------------------------
-		// this is currently only in prototype stage:
+		// this currently in prototype stage only:
 		
 		class ofxIKchain {
 		public:

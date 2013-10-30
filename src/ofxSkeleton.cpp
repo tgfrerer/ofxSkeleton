@@ -29,25 +29,13 @@
 
 using namespace pal::ofxSkeleton;
 
-// ----------------------------------------------------------------------
-
-ofVboMesh & sBoneMesh() {
-	static ofVboMesh mesh(ofConePrimitive( 1.f, 1.f, 4, 2, 2 ).getConeMesh());
-	return mesh;
-}
-
-// ----------------------------------------------------------------------
-
-ofVboMesh & sJointMesh(){
-	 static ofVboMesh mesh(ofSpherePrimitive(1,6).getMesh());
-	 return mesh;
-}
+ofIndexType PRIMITIVE_RESTART_INDEX = 65535;
 
 // ----------------------------------------------------------------------
 
 ofMesh getAxisMesh(){
 	ofMesh mesh;
-
+	
 	mesh.setMode(OF_PRIMITIVE_LINES);
 	
 	ofVec3f vertices[6] = {
@@ -73,6 +61,63 @@ ofMesh getAxisMesh(){
 }
 
 // ----------------------------------------------------------------------
+
+ofMesh getJointMesh(){
+	ofMesh mesh;
+	
+	// this will hold the points of a circle in the YZ-plane
+	vector<ofVec3f> verts;
+	vector<ofFloatColor> colours;
+	vector<ofIndexType> indices;
+	
+	for (int i=0; i<30; i++){	// YZ
+		verts.push_back(ofVec3f(0, sin(TWO_PI * i/30.0f), cos(TWO_PI * i/30.0f)));
+		colours.push_back(ofColor::red);
+		indices.push_back(i);
+	}
+	indices.push_back(0);
+	indices.push_back(PRIMITIVE_RESTART_INDEX);
+	
+	for (int i=0; i<30; i++){ // XZ
+		verts.push_back(ofVec3f(sin(TWO_PI * i/30.0f), 0 , cos(TWO_PI * i/30.0f)));
+		colours.push_back(ofColor::green);
+		indices.push_back(i+30);
+	}
+	indices.push_back(30);
+	indices.push_back(PRIMITIVE_RESTART_INDEX);
+
+	for (int i=0; i< 30; i++){ // XY
+		verts.push_back(ofVec3f(sin(TWO_PI * i/30.0f), cos(TWO_PI * i/30.0f), 0));
+		colours.push_back(ofColor::blue);
+		indices.push_back(i+60);
+	}
+	indices.push_back(60);
+
+
+	mesh.setMode(OF_PRIMITIVE_LINE_STRIP);
+	mesh.addVertices(verts);
+	mesh.addColors(colours);
+	mesh.addIndices(indices);
+	
+	return mesh;
+}
+
+// ----------------------------------------------------------------------
+
+ofVboMesh & sBoneMesh() {
+	static ofVboMesh mesh(ofConePrimitive( 1.f, 1.f, 4, 2, 2 ).getConeMesh());
+	return mesh;
+}
+
+// ----------------------------------------------------------------------
+
+ofVboMesh & sJointMesh(){
+	 static ofVboMesh mesh(getJointMesh());
+	 return mesh;
+}
+
+
+// ----------------------------------------------------------------------
 /// returns a Mesh representing an XYZ coordinate system.
 ofVboMesh & sAxisMesh(){
 	// mesh only available as wireframe //
@@ -92,11 +137,11 @@ void ofxJoint::customDraw(float r_) const {
 		p1 = p1 * p->getGlobalTransformMatrix() * ofMatrix4x4::getInverseOf(getGlobalTransformMatrix());
 
 		ofMatrix4x4 mat;
-		mat.makeRotationMatrix(p2-p1, ofVec3f(0,1,0));
+		mat.makeRotationMatrix(p1-p2, ofVec3f(0,1,0));
 
 		ofPushMatrix();
 		ofMultMatrix(mat.getInverse());
-		ofTranslate(0, -(p2-p1).length() * 0.5, 0);
+		ofTranslate(0,(p2-p1).length() * 0.5, 0);
 		ofScale(r_,(p2-p1).length(),r_);
 		sBoneMesh().drawWireframe();
 		ofPopMatrix();
@@ -104,18 +149,20 @@ void ofxJoint::customDraw(float r_) const {
 	
 	ofPushMatrix();
 	ofScale(r_,r_,r_);
+	glEnable(GL_PRIMITIVE_RESTART);
+	glPrimitiveRestartIndex(PRIMITIVE_RESTART_INDEX);
 	sJointMesh().drawWireframe();
+	glDisable(GL_PRIMITIVE_RESTART);
 	ofPopMatrix();
 }
 
 
 // ----------------------------------------------------------------------
 
-void ofxJoint::draw(float r_, const ofColor& colour_) const {
+void ofxJoint::draw(float r_) const {
 	ofPushStyle();
 	ofPushMatrix();
 	ofMultMatrix(getGlobalTransformMatrix());
-	ofSetColor(colour_);
 	customDraw(r_);
 	ofPopMatrix();
 	ofPopStyle();
@@ -379,7 +426,7 @@ void ofxIKchain::solve(){
 			// calculate the total angle
 			q.getRotate(parentOldAngle, parentOldAxis);
 			// clamp to the max angle.
-			q.makeRotate(ofClamp(parentOldAngle,-60,80), parentOldAxis);
+			q.makeRotate(ofClamp(parentOldAngle, -45, 45), parentOldAxis);
 			bone->setParentOrientation(q);
 		}
 	}
