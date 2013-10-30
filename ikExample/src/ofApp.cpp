@@ -7,6 +7,7 @@ void ofApp::setup(){
 		ofxJoint * j = new ofxJoint();
 		if (i>0) j->bone(bones.back());
 		j->setPosition(ofVec3f(50, 0, 50));
+		j->setName("Joint_" + ofToString(i));
 		bones.push_back(shared_ptr<ofxJoint>(j));
 	}
 	
@@ -23,7 +24,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-	ofBackground(20);
+	ofBackgroundGradient(ofColor(18,33,54), ofColor(18,22,28));
 	
 	ofSetColor(255);
 
@@ -32,7 +33,7 @@ void ofApp::draw(){
 
 	for (int i = 0; i<bones.size(); ++i){
 		bones[i]->draw(15.0f);
-		ofDrawBitmapString(ofToString(i), bones[i]->getGlobalPosition());
+		bones[i]->drawName();
 	}
 	
 }
