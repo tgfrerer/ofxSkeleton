@@ -3,11 +3,12 @@
 #include "ofMain.h"
 #include "ofxSkeleton.h"
 
+using namespace pal::ofxSkeleton;
 
-class testApp : public ofBaseApp{
+class ofApp : public ofBaseApp{
 
-	vector<shared_ptr<ofxBone> > bones;
-	ofxBoneIKchain			IKchain;
+	vector<shared_ptr<ofxJoint> >	bones;
+	ofxIKchain						mIKchain;
 	
 	
 	public:
