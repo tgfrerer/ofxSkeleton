@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>389C1AF9-B4E3-4E76-9413-4CF149034EF5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ikExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2DC21A15-6AD6-4D4D-A9AE-9440C16690E3</key>
+		<string>ssh://poniesandlight.co.uk/var/git/pal.addons.ofxSkeleton.git</string>
+		<key>D40A9F68-4AFD-4A64-80A2-B8B81A89B82C</key>
+		<string>git://github.com/openframeworks/openFrameworks.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>addons/ofxSkeleton/example/ikExample.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2DC21A15-6AD6-4D4D-A9AE-9440C16690E3</key>
+		<string>../../..</string>
+		<key>D40A9F68-4AFD-4A64-80A2-B8B81A89B82C</key>
+		<string>../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://poniesandlight.co.uk/var/git/pal.addons.ofxSkeleton.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D40A9F68-4AFD-4A64-80A2-B8B81A89B82C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D40A9F68-4AFD-4A64-80A2-B8B81A89B82C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>oF</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2DC21A15-6AD6-4D4D-A9AE-9440C16690E3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ofxSkeleton</string>
+		</dict>
+	</array>
+</dict>
+</plist>
