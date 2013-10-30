@@ -29,6 +29,10 @@
 
 This addon allows you to build (and debug-draw) skeleton structures, useful for skeletal animation and skinning. 
 
+## Description
+
+## Motivation
+
 ## Use case:
 
 	typedef shared_ptr<pal::ofxSkeleton::ofxJoint>  JointP_t;
@@ -48,12 +52,24 @@ This addon allows you to build (and debug-draw) skeleton structures, useful for 
 	mRoot->setName("Root");
 
 	// build skeleton based on joints.
+	// this applies a hierarchy, and allows you to set children 
+	// bones' offsets relative to their parent's.
 	mFoot->bone(mKnee)->bone(mHip)->bone(mRoot);
 
 	mRoot->setGlobalPosition(ofVec3f(0));
 	
-	mHip ->setGlobalPosition(ofVec3f(0,100,0));
+	mHip->setGlobalPosition(ofVec3f(0,100,0));
 	mKnee->setGlobalPosition(ofVec3f(0,50,0));
 	mFoot->setGlobalPosition(ofVec3f(0,-50,0));
 
-Now, you can rotate the hip joint, for example, as in: 
+## Example Projects
+
+2 included. 
+
+![image](http://poniesandlight.co.uk/img/ref-render-ofxSkeleton.png "ofxSkeleton Reference Render")
+
+
+## Dependencies
+
+
+
