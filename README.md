@@ -4,7 +4,6 @@
 	 /  __/ * /  /__    (c) ponies & light, 2012, 2013. All rights reserved.
 	/__/     /_____/    poniesandlight.co.uk
 
-	ofxSkeleton.cpp
 	Created by tim on 12/11/2012.
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,11 +26,9 @@
 
 # ofxSkeleton
 
-This addon allows you to build (and debug-draw) skeleton structures, useful for skeletal animation and skinning. 
-
 ## Description
 
-## Motivation
+This addon allows you to build (and debug-draw) skeleton structures, useful for skeletal animation and skinning. 
 
 ## Use case:
 
@@ -54,6 +51,7 @@ This addon allows you to build (and debug-draw) skeleton structures, useful for 
 	// build skeleton based on joints.
 	// this applies a hierarchy, and allows you to set children 
 	// bones' offsets relative to their parent's.
+	
 	mFoot->bone(mKnee)->bone(mHip)->bone(mRoot);
 
 	mRoot->setGlobalPosition(ofVec3f(0));
@@ -68,8 +66,8 @@ This addon allows you to build (and debug-draw) skeleton structures, useful for 
 
 ![image](http://poniesandlight.co.uk/img/ref-render-ofxSkeleton.png "ofxSkeleton Reference Render")
 
-
 ## Dependencies
 
+* ♥ openframeworks >= 0.8.0
 
 
